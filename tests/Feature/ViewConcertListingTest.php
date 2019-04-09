@@ -17,17 +17,18 @@ class ViewConcertListingTest extends TestCase
      */
     /*  public function testBasicTest()
       {
-          $response = $this->get('/');
+          $this = $this->get('/');
 
-          $response->assertStatus(200);
+          $this->assertStatus(200);
       }*/
+    use DatabaseMigrations;
 
     /** @test */
     function user_can_view_a_concert_listing()
     {
         // Arrange
 
-        $concert = Concert::make([
+        $concert = Concert::create([
             'title' => 'The Red Chord',
             'subtitle' => 'with Animosity',
             'date' => Carbon::parse('December 13, 2016 8:00pm'),
@@ -41,20 +42,22 @@ class ViewConcertListingTest extends TestCase
         ]);
 
         // act
+        $this->visit('/concerts/' . $concert->id);
 
-        $response = $this->get('/concerts/.$concert->id');
 
 
         // Assert
 
 
-        $response->assertSee('The Red Chord');
-        $response->assertSee('with Animosity');
-        $response->assertSee('December 13, 2016');
-        $response->assertSee('8:00pm');
-        $response->assertSee('The Mosh Pit');
-        $response->assertSee('123 Example Lane');
-        $response->assertSee('Laraville, ON 17916');
-        $response->assertSee('For tickets, call me');
+        $this->see('The Red Chord');
+        $this->see('with Animosity');
+        $this->see('December 13, 2016');
+        $this->see('8:00pm');
+        $this->see('32.50');
+        $this->see('The Mosh Pit');
+        $this->see('123 Example Lane');
+        $this->see('Laraville, ON 17916');
+        $this->see('For tickets, call me');
+
     }
 }

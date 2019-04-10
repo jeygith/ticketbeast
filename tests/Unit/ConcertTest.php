@@ -73,4 +73,20 @@ class ConcertTest extends TestCase
 
     }
 
+
+    /** @test */
+    function can_order_concert_tickets()
+    {
+        $concert = factory(Concert::class)->create();
+
+
+        $order = $concert->orderTickets('jane@example.com', 3);
+
+
+        $this->assertEquals('jane@example.com', $order->email);
+
+        $this->assertEquals(3, $order->tickets()->count());
+
+    }
+
 }

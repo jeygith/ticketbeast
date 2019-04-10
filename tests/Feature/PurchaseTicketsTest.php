@@ -98,6 +98,51 @@ class PurchaseTicketsTest extends TestCase
     }
 
     /** @test */
+    function an_order_is_not_created_if_payment_fails()
+    {
+        $this->disableExceptionHandling();
+        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3250]);
+
+        $this->orderTickets($concert, [
+            'email' => 'john@example.com',
+            'ticket_quantity' => 3,
+            'payment_token' => 'invalid-payment-token'
+        ]);
+
+
+        $this->assertResponseStatus(422);
+
+        $order = $concert->orders()->where('email', 'john@example.com')->first();
+
+        $this->assertNull($order);
+
+    }
+
+    /** @test */
+    function cannot_purchase_more_tickets_than_remain()
+    {
+        $concert = factory(Concert::class)->states('published')->create();
+
+        $concert->addTickets(50);
+
+        $this->orderTickets($concert, [
+            'email' => 'john@example.com',
+            'ticket_quantity' => 51,
+            'payment_token' => $this->paymentGateway->getValidTestToken()
+        ]);
+
+        $this->assertResponseStatus(422);
+
+        $order = $concert->orders()->where('email', 'john@example.com')->first();
+
+        $this->assertNull($order);
+
+        $this->assertEquals(0, $this->paymentGateway->totalCharges());
+
+        $this->assertEquals(50, $concert->ticketsRemaining());
+    }
+
+    /** @test */
     function email_is_required_to_purchase_tickets()
     {
 
@@ -185,26 +230,5 @@ class PurchaseTicketsTest extends TestCase
 
     }
 
-
-    /** @test */
-    function an_order_is_not_created_if_payment_fails()
-    {
-        $this->disableExceptionHandling();
-        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3250]);
-
-        $this->orderTickets($concert, [
-            'email' => 'john@example.com',
-            'ticket_quantity' => 3,
-            'payment_token' => 'invalid-payment-token'
-        ]);
-
-
-        $this->assertResponseStatus(422);
-
-        $order = $concert->orders()->where('email', 'john@example.com')->first();
-
-        $this->assertNull($order);
-
-    }
 
 }

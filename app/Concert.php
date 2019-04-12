@@ -40,6 +40,19 @@ class Concert extends Model
         return $this->hasMany(Order::class);
     }
 
+
+    public function hasOrderFor($email)
+    {
+        return $this->orders()->where('email', $email)->count() > 0;
+
+    }
+
+    public function ordersFor($email)
+    {
+        return $this->orders()->where('email', $email)->get();
+
+    }
+
     public function tickets()
     {
         return $this->hasMany(Ticket::class);
@@ -75,6 +88,8 @@ class Concert extends Model
         foreach (range(1, $quantity) as $i) {
             $this->tickets()->create([]);
         }
+
+        return $this;
 
     }
 

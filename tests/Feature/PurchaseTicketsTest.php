@@ -50,6 +50,8 @@ class PurchaseTicketsTest extends TestCase
         //act
         //purchase tickets
 
+        $concert->addTickets(3);
+
         $this->orderTickets($concert, [
             'email' => 'john@example.com',
             'ticket_quantity' => 3,
@@ -81,6 +83,9 @@ class PurchaseTicketsTest extends TestCase
 
         $concert = factory(Concert::class)->states('unpublished')->create();
 
+        $concert->addTickets(3);
+
+
         $this->orderTickets($concert, [
             'email' => 'john@example.com',
             'ticket_quantity' => 3,
@@ -103,6 +108,9 @@ class PurchaseTicketsTest extends TestCase
         $this->disableExceptionHandling();
         $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3250]);
 
+        $concert->addTickets(3);
+
+
         $this->orderTickets($concert, [
             'email' => 'john@example.com',
             'ticket_quantity' => 3,
@@ -121,6 +129,7 @@ class PurchaseTicketsTest extends TestCase
     /** @test */
     function cannot_purchase_more_tickets_than_remain()
     {
+        $this->disableExceptionHandling();
         $concert = factory(Concert::class)->states('published')->create();
 
         $concert->addTickets(50);

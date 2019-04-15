@@ -30,6 +30,12 @@ class ConcertOrdersController extends Controller
         ]);
 
         try {
+            // find tickets
+            // charge customers
+
+            // create order for those tickets
+
+
 
             /*create order*/
             $order = $concert->orderTickets(request('email'), request('ticket_quantity'));

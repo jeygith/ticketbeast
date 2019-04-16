@@ -1,6 +1,7 @@
 <?php
 
 use App\Concert;
+use App\Ticket;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -57,4 +58,13 @@ $factory->state(Concert::class, 'unpublished', function ($faker) {
     ];
 });
 
+
+$factory->define(Ticket::class, function (Faker $faker) {
+
+    return [
+        'concert_id' => function () {
+            return factory(Concert::class)->create()->id;
+        }
+    ];
+});
 

@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Concert;
 use App\Order;
+use App\Ticket;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -13,6 +14,22 @@ class TicketTest extends TestCase
 {
 
     use DatabaseMigrations;
+
+
+    /** @test */
+    function a_ticket_can_be_reserved()
+    {
+
+        $ticket = factory(Ticket::class)->create();
+        $this->assertNull($ticket->reserved_at);
+
+
+        $ticket->reserve();
+
+
+        $this->assertNotNull($ticket->fresh()->reserved_at);
+    }
+
 
     /** @test */
     function tickets_are_released_when_order_is_cancelled()

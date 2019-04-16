@@ -26,7 +26,11 @@ class PurchaseTicketsTest extends TestCase
 
     private function orderTickets($concert, $params)
     {
+        $savedRequest = $this->app['request'];
+
         $this->json('POST', "/concerts/{$concert->id}/orders", $params);
+        $this->app['request'] = $savedRequest;
+
 
     }
 
@@ -159,11 +163,15 @@ class PurchaseTicketsTest extends TestCase
 
 
         $this->paymentGateway->beforeFirstCharge(function ($paymentGateway) use ($concert) {
+
+
             $this->orderTickets($concert, [
                 'email' => 'personB@example.com',
                 'ticket_quantity' => 3,
                 'payment_token' => $this->paymentGateway->getValidTestToken()
             ]);
+
+
 
             $this->assertResponseStatus(422);
 
@@ -183,7 +191,7 @@ class PurchaseTicketsTest extends TestCase
             'payment_token' => $this->paymentGateway->getValidTestToken()
         ]);
 
-        dd($concert->orders()->first()->toArray());
+        // dd($concert->orders()->first()->toArray());
 
 
         $this->assertEquals(3600, $this->paymentGateway->totalCharges());

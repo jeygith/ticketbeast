@@ -34,7 +34,7 @@ $factory->define(Concert::class, function (Faker $faker) {
         'title' => 'Example Band',
         'subtitle' => 'with FAke openers',
         'date' => Carbon::parse('+2 weeks'),
-        'ticket_price' => 20,
+        'ticket_price' => 2000,
         'venue' => 'The Example Theatre',
         'venue_address' => '123 Example Lane',
         'city' => 'Fakeville',

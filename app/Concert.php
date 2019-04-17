@@ -84,9 +84,12 @@ class Concert extends Model
 
     public function reserveTickets($quantity)
     {
-        return $this->findTickets($quantity)->each(function ($ticket) {
+        $tickets = $this->findTickets($quantity)->each(function ($ticket) {
             $ticket->reserve();
         });
+
+
+        return new Reservation($tickets);
     }
 
 

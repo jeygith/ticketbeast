@@ -8,12 +8,12 @@ class Reservation
 {
 
 
-    protected $tickets, $email;
+    protected $tickets, $customerEmail;
 
     public function __construct($tickets, $email)
     {
         $this->tickets = $tickets;
-        $this->email = $email;
+        $this->customerEmail = $email;
     }
 
     public function totalCost()

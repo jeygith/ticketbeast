@@ -47,14 +47,14 @@ class Order extends Model
     }
 
 
-    public function cancel()
+   /* public function cancel()
     {
         foreach ($this->tickets as $ticket) {
             $ticket->release();
         }
 
         $this->delete();
-    }
+    }*/
 
     /**
      * @return int

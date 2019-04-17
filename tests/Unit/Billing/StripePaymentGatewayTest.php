@@ -4,6 +4,8 @@ namespace Tests\Unit\Billing;
 
 use App\Billing\FakePaymentGateway;
 use App\Billing\PaymentFailedException;
+use App\Billing\StripePaymentGateway;
+use Stripe\Charge;
 use Stripe\Stripe;
 use Stripe\Token;
 use Tests\TestCase;
@@ -12,16 +14,29 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class  StripePaymentGatewayTest extends TestCase
 {
-    /** @test */
-    function charges_with_a_valid_token_are_successful()
+    private function lastCharge()
     {
+        return Charge::all(
+            ['limit' => 1],
+            ['api_key' => config('services.stripe.secret')]
+        )['data'][0];
+    }
 
-        // Create a new gateway
-        $paymentGateway = new StripePaymentGateway();
 
-        //  Stripe::setApiKey(config('services.stripe.secret'));
+    private function newCharges( )
+    {
+        return Charge::all(
+            [
+                'limit' => 1,
+                'ending_before' => $this->lastCharge->id
+            ],
+            ['api_key' => config('services.stripe.secret')]
+        )['data'];
+    }
 
-        $token = Token::create([
+    private function validToken()
+    {
+        return Token::create([
             'card' => [
                 'number' => '4242424242424242',
                 'exp_month' => 1,
@@ -29,63 +44,34 @@ class  StripePaymentGatewayTest extends TestCase
                 'cvc' => '123'
             ]
         ], ['api_key' => config('services.stripe.secret')])->id;
+    }
+
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->lastCharge = $this->lastCharge();
+    }
+
+    /** @test */
+    function charges_with_a_valid_token_are_successful()
+    {
+
+        // Create a new gateway
+        $paymentGateway = new StripePaymentGateway(config('services.stripe.secret'));
+
+        //  Stripe::setApiKey(config('services.stripe.secret'));
 
 
         // create new charge with a valid stripe token
-        $paymentGateway->charge(2500, $token);
+        $paymentGateway->charge(2500, $this->validToken());
 
         // verify the charge was completed successfully
 
+        $this->assertCount(1, $this->newCharges());
 
-        $this->assertEquals(2500, $paymentGateway->totalCharges());
-
-    }
-
-
-    /** @test */
-    function charges_with_an_invalid_payment_token_fail()
-    {
-        try {
-            $paymentGateway = new FakePaymentGateway();
-
-
-            $paymentGateway->charge(2500, 'invalid-payment-token');
-        } catch (PaymentFailedException $e) {
-            $this->assertEquals(1, 1);
-            return;
-        }
-
-
-        $this->fail();
-
+        $this->assertEquals(2500, $this->lastCharge()->amount);
 
     }
 
-    /** @test */
-    function running_a_hook_before_the_first_charge()
-    {
-        $paymentGateway = new FakePaymentGateway();
-
-
-        $callbackRan = false;
-        $timesCallbackRan = 0;
-
-
-        $paymentGateway->beforeFirstCharge(function ($paymentGateway) use (&$timesCallbackRan) {
-            $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
-
-            $timesCallbackRan++;
-
-            $this->assertEquals(2500, $paymentGateway->totalCharges());
-        });
-
-
-        $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
-
-        $this->assertEquals(1, $timesCallbackRan);
-
-        $this->assertEquals(5000, $paymentGateway->totalCharges());
-
-
-    }
 }

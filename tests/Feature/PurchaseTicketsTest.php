@@ -129,6 +129,8 @@ class PurchaseTicketsTest extends TestCase
 
         $this->assertFalse($concert->hasOrderFor('john@example.com'));
 
+        $this->assertEquals(3, $concert->ticketsRemaining());
+
     }
 
     /** @test */
@@ -170,7 +172,6 @@ class PurchaseTicketsTest extends TestCase
                 'ticket_quantity' => 3,
                 'payment_token' => $this->paymentGateway->getValidTestToken()
             ]);
-
 
 
             $this->assertResponseStatus(422);

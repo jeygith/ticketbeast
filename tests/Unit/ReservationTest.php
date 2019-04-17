@@ -14,6 +14,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ReservationTest extends TestCase
 {
+    use DatabaseMigrations;
 
     /** @test */
     function calculating_the_total_cost()
@@ -28,7 +29,7 @@ class ReservationTest extends TestCase
             ]
         );
 
-        $reservation = new Reservation($tickets,'john@example.com');
+        $reservation = new Reservation($tickets, 'john@example.com');
 
 
         $this->assertEquals(3600, $reservation->totalCost());
@@ -45,7 +46,7 @@ class ReservationTest extends TestCase
             ]
         );
 
-        $reservation = new Reservation($tickets,'john@example.com');
+        $reservation = new Reservation($tickets, 'john@example.com');
 
 
         $this->assertEquals($tickets, $reservation->tickets());
@@ -74,7 +75,7 @@ class ReservationTest extends TestCase
         ]);
 
 
-        $reservation = new Reservation($tickets,'john@example.com');
+        $reservation = new Reservation($tickets, 'john@example.com');
 
         $reservation->cancel();
 
@@ -83,6 +84,27 @@ class ReservationTest extends TestCase
         }
 
 
+    }
+
+
+    /** @test */
+    function completing_a_reservation()
+    {
+
+        $concert = factory(Concert::class)->create(['ticket_price' => 1200]);
+
+        $tickets = factory(Ticket::class, 3)->create(['concert_id' => $concert->id]);
+
+        $reservation = new Reservation($tickets, 'john@example.com');
+
+
+        $order = $reservation->complete();
+
+        $this->assertEquals('john@example.com', $order->email);
+
+        $this->assertEquals(3, $order->ticketQuantity());
+
+        $this->assertEquals(3600, $order->amount);
     }
 
 

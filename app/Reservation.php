@@ -8,11 +8,12 @@ class Reservation
 {
 
 
-    private $tickets;
+    private $tickets, $email;
 
-    public function __construct($tickets)
+    public function __construct($tickets, $email)
     {
         $this->tickets = $tickets;
+        $this->email = $email;
     }
 
     public function totalCost()
@@ -24,6 +25,12 @@ class Reservation
     {
         return $this->tickets;
     }
+
+    public function email()
+    {
+        return $this->email;
+    }
+
 
     public function cancel()
     {

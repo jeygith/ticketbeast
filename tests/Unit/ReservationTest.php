@@ -28,7 +28,7 @@ class ReservationTest extends TestCase
             ]
         );
 
-        $reservation = new Reservation($tickets);
+        $reservation = new Reservation($tickets,'john@example.com');
 
 
         $this->assertEquals(3600, $reservation->totalCost());
@@ -45,11 +45,22 @@ class ReservationTest extends TestCase
             ]
         );
 
-        $reservation = new Reservation($tickets);
+        $reservation = new Reservation($tickets,'john@example.com');
 
 
         $this->assertEquals($tickets, $reservation->tickets());
     }
+
+    /** @test */
+    function retrieving_the_customer_email()
+    {
+
+        $reservation = new Reservation(collect(), 'john@example.com');
+
+
+        $this->assertEquals('john@example.com', $reservation->email());
+    }
+
 
     /** @test */
     function reserved_tickets_are_released_when_a_reservation_is_cancelled()
@@ -63,7 +74,7 @@ class ReservationTest extends TestCase
         ]);
 
 
-        $reservation = new Reservation($tickets);
+        $reservation = new Reservation($tickets,'john@example.com');
 
         $reservation->cancel();
 

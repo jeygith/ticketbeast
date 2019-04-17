@@ -8,7 +8,7 @@ class Reservation
 {
 
 
-    private $tickets, $email;
+    protected $tickets, $email;
 
     public function __construct($tickets, $email)
     {
@@ -31,8 +31,10 @@ class Reservation
         return $this->email;
     }
 
-    public function complete()
+    public function complete($paymentGateway, $paymentToken)
     {
+        $paymentGateway->charge($this->totalCost(), $paymentToken);
+
         return Order::forTickets($this->tickets(), $this->email(), $this->totalCost());
     }
 

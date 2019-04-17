@@ -4,6 +4,8 @@ namespace Tests\Unit;
 
 use App\Concert;
 use App\Order;
+use App\Reservation;
+use App\Ticket;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -38,6 +40,25 @@ class OrderTest extends TestCase
     }
 
     /** @test */
+    function creating_an_order_from_reservation()
+    {
+        $concert = factory(Concert::class)->create(['ticket_price' => 1200]);
+
+        $tickets = factory(Ticket::class, 3)->create(['concert_id' => $concert->id]);
+
+        $reservation = new Reservation($tickets, 'john@example.com');
+
+        $order = Order::fromReservation($reservation);
+
+        $this->assertEquals('john@example.com', $order->email);
+
+        $this->assertEquals(3, $order->ticketQuantity());
+        $this->assertEquals(3600, $order->amount);
+
+
+    }
+
+    /** @test */
     function converting_to_an_array()
     {
 
@@ -57,23 +78,23 @@ class OrderTest extends TestCase
 
 
     /** @test */
-/*    function tickets_are_released_when_order_is_cancelled()
-    {
-        $concert = factory(Concert::class)->create()->addTickets(10);
+    /*    function tickets_are_released_when_order_is_cancelled()
+        {
+            $concert = factory(Concert::class)->create()->addTickets(10);
 
-        $order = $concert->orderTickets('jane@example.com', 5);
-
-
-        $this->assertEquals(5, $concert->ticketsRemaining());
+            $order = $concert->orderTickets('jane@example.com', 5);
 
 
-        $order->cancel();
+            $this->assertEquals(5, $concert->ticketsRemaining());
 
 
-        $this->assertEquals(10, $concert->ticketsRemaining());
-
-        $this->assertNull(Order::find($order->id));
+            $order->cancel();
 
 
-    }*/
+            $this->assertEquals(10, $concert->ticketsRemaining());
+
+            $this->assertNull(Order::find($order->id));
+
+
+        }*/
 }

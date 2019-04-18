@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.8.10 on 2019-04-18 12:54:00.
+ * Generated for Laravel 5.8.12 on 2019-04-18 15:20:40.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -10539,17 +10539,15 @@ namespace Illuminate\Support\Facades {
     }
 
     /**
-     * //* @method static \Illuminate\Routing\Route get(string $uri, \Closure|array|string|callable|null $action = null)
-     * //* @method static \Illuminate\Routing\Route post(string $uri, \Closure|array|string|callable|null $action = null)
-     * //* @method static \Illuminate\Routing\Route put(string $uri, \Closure|array|string|callable|null $action = null)
-     * //* @method static \Illuminate\Routing\Route delete(string $uri, \Closure|array|string|callable|null $action = null)
-     * //* @method static \Illuminate\Routing\Route patch(string $uri, \Closure|array|string|callable|null $action = null)
-     * //* @method static \Illuminate\Routing\Route options(string $uri, \Closure|array|string|callable|null $action = null)
-     * //* @method static \Illuminate\Routing\Route any(string $uri, \Closure|array|string|callable|null $action = null)
-     * //* @method static \Illuminate\Routing\Route match(array|string $methods, string $uri, \Closure|array|string|callable|null $action = null)
-     * // * @method static \Illuminate\Routing\RouteRegistrar prefix(string  $prefix)
-     * // * @method static \Illuminate\Routing\RouteRegistrar where(array  $where)
+     * 
      *
+     * @method static \Illuminate\Routing\RouteRegistrar prefix(string  $prefix)
+     * @method static \Illuminate\Routing\RouteRegistrar where(array  $where)
+     * @method static \Illuminate\Routing\RouteRegistrar middleware(array|string|null $middleware)
+     * @method static \Illuminate\Routing\RouteRegistrar as(string $value)
+     * @method static \Illuminate\Routing\RouteRegistrar domain(string $value)
+     * @method static \Illuminate\Routing\RouteRegistrar name(string $value)
+     * @method static \Illuminate\Routing\RouteRegistrar namespace(string $value)
      * @see \Illuminate\Routing\Router
      */ 
     class Route {

@@ -28,7 +28,7 @@ class Reservation
 
     public function email()
     {
-        return $this->email;
+        return $this->customerEmail;
     }
 
     public function complete($paymentGateway, $paymentToken)

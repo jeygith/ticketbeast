@@ -27,13 +27,21 @@ class ViewOrderTest extends TestCase
 
         // create order
         $order = factory(Order::class)->create([
-            'confirmation_number' => 'ORDERCONFIRMTION1234'
+            'confirmation_number' => 'ORDERCONFIRMTION1234',
+            'card_last_four' => 1881,
+            'amount' => 8500,
         ]);
 
         // create  a tickets
-        $ticket = factory(Ticket::class)->create([
+        $ticketA = factory(Ticket::class)->create([
             'concert_id' => $concert->id,
-            'order_id' => $order->id
+            'order_id' => $order->id,
+            'code' => 'TICKETCODE123'
+        ]);
+        $ticketB = factory(Ticket::class)->create([
+            'concert_id' => $concert->id,
+            'order_id' => $order->id,
+            'code' => 'TICKETCODE456'
         ]);
 
         //visit order confirmation page
@@ -48,5 +56,13 @@ class ViewOrderTest extends TestCase
         $response->assertViewHas('order', function ($viewOrder) use ($order) {
             return $order->id === $viewOrder->id;
         });
+
+        $response->assertSee('ORDERCONFIRMTION1234');
+        $response->assertSee('$85.00');
+        $response->assertSee('**** **** **** 1881');
+        $response->assertSee('TICKETCODE123');
+        $response->assertSee('TICKETCODE456');
+
+
     }
 }

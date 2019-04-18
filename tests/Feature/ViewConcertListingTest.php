@@ -42,21 +42,21 @@ class ViewConcertListingTest extends TestCase
             'additional_information' => 'For tickets, call me']);
 
         // act
-        $this->visit('/concerts/' . $concert->id);
+        $response = $this->get('/concerts/' . $concert->id);
 
 
         // Assert
 
-
-        $this->see('The Red Chord');
-        $this->see('with Animosity');
-        $this->see('December 13, 2016');
-        $this->see('8:00pm');
-        $this->see('32.50');
-        $this->see('The Mosh Pit');
-        $this->see('123 Example Lane');
-        $this->see('Laraville, ON 17916');
-        $this->see('For tickets, call me');
+        $response->assertStatus(200);
+        $response->assertSee('The Red Chord');
+        $response->assertSee('with Animosity');
+        $response->assertSee('December 13, 2016');
+        $response->assertSee('8:00pm');
+        $response->assertSee('32.50');
+        $response->assertSee('The Mosh Pit');
+        $response->assertSee('123 Example Lane');
+        $response->assertSee('Laraville, ON 17916');
+        $response->assertSee('For tickets, call me');
 
     }
 
@@ -65,8 +65,8 @@ class ViewConcertListingTest extends TestCase
     {
         $concert = factory(Concert::class)->states('unpublished')->create();
 
-        $this->get('/concerts/' . $concert->id);
+        $response = $this->get('/concerts/' . $concert->id);
 
-        $this->assertResponseStatus(404);
+        $response->assertStatus(404);
     }
 }

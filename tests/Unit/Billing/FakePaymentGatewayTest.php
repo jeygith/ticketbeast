@@ -5,6 +5,7 @@ namespace Tests\Unit\Billing;
 use App\Billing\FakePaymentGateway;
 use App\Billing\PaymentFailedException;
 use App\Billing\StripePaymentGateway;
+use function foo\func;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,40 +13,32 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class  FakePaymentGatewayTest extends TestCase
 {
 
+    use PaymentGatewayContractTests;
+
     protected function getPaymentGateway()
     {
         return new FakePaymentGateway();
     }
 
     /** @test */
-    function charges_with_a_valid_token_are_successful()
+    function can_fetch_charges_created_during_a_callback()
     {
         $paymentGateway = $this->getPaymentGateway();
+        $paymentGateway->charge(2000, $paymentGateway->getValidTestToken());
+        $paymentGateway->charge(3000, $paymentGateway->getValidTestToken());
 
-        $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
-
-
-        $this->assertEquals(2500, $paymentGateway->totalCharges());
-
-    }
-
-
-    /** @test */
-    function charges_with_an_invalid_payment_token_fail()
-    {
-        try {
-            $paymentGateway = new FakePaymentGateway();
-            $paymentGateway->charge(2500, 'invalid-payment-token');
-        } catch (PaymentFailedException $e) {
-            $this->assertEquals(1, 1);
-            return;
-        }
+        $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
+            $paymentGateway->charge(4000, $paymentGateway->getValidTestToken());
+            $paymentGateway->charge(5000, $paymentGateway->getValidTestToken());
+        });
 
 
-        $this->fail();
-
+        $this->assertCount(2, $newCharges);
+        $this->assertEquals([5000, 4000], $newCharges->all());
 
     }
+
+
 
     /** @test */
     function running_a_hook_before_the_first_charge()

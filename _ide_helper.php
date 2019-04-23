@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.8.12 on 2019-04-18 15:20:40.
+ * Generated for Laravel 5.8.14 on 2019-04-23 14:14:36.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -7888,6 +7888,20 @@ namespace Illuminate\Support\Facades {
         }
         
         /**
+         * Get the retry delay for an object-based queue handler.
+         *
+         * @param mixed $job
+         * @return mixed 
+         * @static 
+         */ 
+        public static function getJobRetryDelay($job)
+        {
+            //Method inherited from \Illuminate\Queue\Queue            
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
+                        return $instance->getJobRetryDelay($job);
+        }
+        
+        /**
          * Get the expiration timestamp for an object-based queue handler.
          *
          * @param mixed $job
@@ -11455,6 +11469,7 @@ namespace Illuminate\Support\Facades {
     /**
      * 
      *
+     * @method static void registerCustomDBALType(string $class, string $name, string $type)
      * @see \Illuminate\Database\Schema\Builder
      */ 
     class Schema {
@@ -11664,6 +11679,23 @@ namespace Illuminate\Support\Facades {
             //Method inherited from \Illuminate\Database\Schema\Builder            
                         /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
                         return $instance->disableForeignKeyConstraints();
+        }
+        
+        /**
+         * Register a custom Doctrine mapping type.
+         *
+         * @param string $class
+         * @param string $name
+         * @param string $type
+         * @return void 
+         * @throws \Doctrine\DBAL\DBALException
+         * @static 
+         */ 
+        public static function registerCustomDoctrineType($class, $name, $type)
+        {
+            //Method inherited from \Illuminate\Database\Schema\Builder            
+                        /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
+                        $instance->registerCustomDoctrineType($class, $name, $type);
         }
         
         /**

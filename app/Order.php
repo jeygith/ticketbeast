@@ -21,10 +21,12 @@ class Order extends Model
 
     public static function forTickets($tickets, $email, $amount)
     {
+
         $order = self::create([
             // 'concert_id' => $this->id,
             'email' => $email,
-            'amount' => $amount
+            'amount' => $amount,
+            'confirmation_number' => app(OrderConfirmationNumberGenerator::class)->generate(),
         ]);
 
         foreach ($tickets as $ticket) {

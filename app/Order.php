@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Facades\OrderConfirmationNumber;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -26,7 +27,7 @@ class Order extends Model
             // 'concert_id' => $this->id,
             'email' => $email,
             'amount' => $amount,
-            'confirmation_number' => app(OrderConfirmationNumberGenerator::class)->generate(),
+            'confirmation_number' => OrderConfirmationNumber::generate(),
         ]);
 
         foreach ($tickets as $ticket) {

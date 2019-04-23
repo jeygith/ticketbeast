@@ -67,9 +67,6 @@ class RandomOrderConfirmationNumberGeneratorTest extends TestCase
 
         $this->assertCount(100, array_unique($confirmationNumbers));
 
-        dd(array_unique($confirmationNumbers));
-
-        dd($confirmationNumbers);
     }
 
 }

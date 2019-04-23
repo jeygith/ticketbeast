@@ -20,14 +20,15 @@ class Order extends Model
 
     protected $guarded = [];
 
-    public static function forTickets($tickets, $email, $amount)
+    public static function forTickets($tickets, $email, $charge)
     {
 
         $order = self::create([
             // 'concert_id' => $this->id,
             'email' => $email,
-            'amount' => $amount,
+            'amount' => $charge->amount(),
             'confirmation_number' => OrderConfirmationNumber::generate(),
+            'card_last_four' => $charge->cardLastFour(),
         ]);
 
         foreach ($tickets as $ticket) {

@@ -10,6 +10,8 @@ class FakePaymentGateway implements PaymentGateway
 {
 
     private $charges;
+    const TEST_CARD_NUMBER = 4242424242424242;
+
 
     private $tokens;
     private $beforeFirstChargeCallback;
@@ -22,7 +24,7 @@ class FakePaymentGateway implements PaymentGateway
     }
 
 
-    public function getValidTestToken($cardNumber = null)
+    public function getValidTestToken($cardNumber = self::TEST_CARD_NUMBER)
     {
         $token = 'fake-tok_' . Str::random(24);
 

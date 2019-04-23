@@ -57,11 +57,19 @@ class ViewOrderTest extends TestCase
             return $order->id === $viewOrder->id;
         });
 
-        $response->assertSee('ORDERCONFIRMTION1234');
-        $response->assertSee('$85.00');
-        $response->assertSee('**** **** **** 1881');
-        $response->assertSee('TICKETCODE123');
-        $response->assertSee('TICKETCODE456');
+        $response->assertSee('ORDERCONFIRMTION1234')
+            ->assertSee('$85.00')
+            ->assertSee('**** **** **** 1881')
+            ->assertSee('TICKETCODE123')
+            ->assertSee('TICKETCODE456')
+           /* ->assertSee('The Red Chord')
+            ->assertSee('with Animosity and Lethargy')
+            ->assertSee('The Mosh Pit')
+            ->assertSee('123 Example Lane')
+            ->assertSee('Laraville, ON')
+            ->assertSee('17916')
+            ->assertSee('john@example.com')
+            ->assertSee('2017-03-12 20:00')*/;
 
 
     }

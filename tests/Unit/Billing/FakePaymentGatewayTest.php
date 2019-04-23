@@ -21,26 +21,6 @@ class  FakePaymentGatewayTest extends TestCase
     }
 
     /** @test */
-    function can_fetch_charges_created_during_a_callback()
-    {
-        $paymentGateway = $this->getPaymentGateway();
-        $paymentGateway->charge(2000, $paymentGateway->getValidTestToken());
-        $paymentGateway->charge(3000, $paymentGateway->getValidTestToken());
-
-        $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
-            $paymentGateway->charge(4000, $paymentGateway->getValidTestToken());
-            $paymentGateway->charge(5000, $paymentGateway->getValidTestToken());
-        });
-
-
-        $this->assertCount(2, $newCharges);
-        $this->assertEquals([5000, 4000], $newCharges->all());
-
-    }
-
-
-
-    /** @test */
     function running_a_hook_before_the_first_charge()
     {
         $paymentGateway = new FakePaymentGateway();
@@ -67,4 +47,26 @@ class  FakePaymentGatewayTest extends TestCase
 
 
     }
+
+
+    /** @test */
+    function can_fetch_charges_created_during_a_callback()
+    {
+        $paymentGateway = $this->getPaymentGateway();
+        $paymentGateway->charge(2000, $paymentGateway->getValidTestToken());
+        $paymentGateway->charge(3000, $paymentGateway->getValidTestToken());
+
+        $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
+            $paymentGateway->charge(4000, $paymentGateway->getValidTestToken());
+            $paymentGateway->charge(5000, $paymentGateway->getValidTestToken());
+        });
+
+
+        $this->assertCount(2, $newCharges);
+        $this->assertEquals([5000, 4000], $newCharges->map->amount()->all());
+
+    }
+
+
+
 }

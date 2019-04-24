@@ -10,6 +10,7 @@ use Exception;
 // use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Mockery;
 
 
 abstract class TestCase extends BaseTestCase
@@ -21,6 +22,9 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+
+        Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
 
     }
 

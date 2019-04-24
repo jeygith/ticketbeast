@@ -7,8 +7,10 @@ use App\Billing\PaymentGateway;
 use App\Concert;
 use App\Facades\OrderConfirmationNumber;
 use App\Facades\TicketCode;
+use App\Mail\OrderConfirmationEmail;
 use App\OrderConfirmationNumberGenerator;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Mail;
 use Mockery;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -67,6 +69,8 @@ class PurchaseTicketsTest extends TestCase
 
         $this->disableExceptionHandling();
 
+        Mail::fake();
+
         // arrange
         // create a concert
 
@@ -117,8 +121,14 @@ class PurchaseTicketsTest extends TestCase
 
         $this->assertTrue($concert->hasOrderFor('john@example.com'));
 
+        $order = $concert->ordersFor('john@example.com')->first();
 
-        $this->assertEquals(3, $concert->ordersFor('john@example.com')->first()->ticketQuantity());
+        $this->assertEquals(3, $order->ticketQuantity());
+
+        Mail::assertSent(OrderConfirmationEmail::class, function ($mail) use ($order) {
+            return $mail->hasTo('john@example.com')
+                && $mail->order->id == $order->id;
+        });
 
     }
 

@@ -22,9 +22,9 @@
         </div>
         <div class="text-right">
             <button class="btn btn-primary btn-block"
-                @click="openStripe"
-                :class="{ 'btn-loading': processing }"
-                :disabled="processing"
+                    @click="openStripe"
+                    :class="{ 'btn-loading': processing }"
+                    :disabled="processing"
             >
                 Buy Tickets
             </button>
@@ -95,8 +95,8 @@
                     ticket_quantity: this.quantity,
                     payment_token: token.id,
                 }).then(response => {
-                    window.location =`/orders/${response.data.confirmation_number}`;
-                    console.log('Charge succeeded.') 
+                    console.log('Charge succeeded.');
+                    window.location = `/orders/${response.data.confirmation_number}`;
                 }).catch(response => {
                     this.processing = false
                 })

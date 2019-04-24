@@ -13,6 +13,19 @@ class PromoterLoginTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
+    function showing_the_login_form()
+    {
+        $this->disableExceptionHandling();
+
+        $response = $this->get('/login');
+
+
+        $response->assertStatus(200);
+
+        $response->assertSee('form');
+    }
+
+    /** @test */
     function loggin_in_with_valid_credentials()
     {
         $this->disableExceptionHandling();

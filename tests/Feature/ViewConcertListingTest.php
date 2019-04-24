@@ -4,10 +4,8 @@ namespace Tests\Feature;
 
 use App\Concert;
 use Carbon\Carbon;
-use Egulias\EmailValidator\Exception\ConsecutiveAt;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class ViewConcertListingTest extends TestCase
 {

@@ -2,15 +2,14 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-
-
 use App\Exceptions\Handler;
 use Exception;
-// use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Mockery;
+
+
+// use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 
 abstract class TestCase extends BaseTestCase

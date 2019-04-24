@@ -3,16 +3,12 @@
 namespace Tests\Unit;
 
 use App\Billing\Charge;
-use App\Concert;
 use App\Order;
-use App\Reservation;
 use App\Ticket;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Mockery;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class OrderTest extends TestCase
 {

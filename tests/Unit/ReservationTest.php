@@ -4,14 +4,11 @@ namespace Tests\Unit;
 
 use App\Billing\FakePaymentGateway;
 use App\Concert;
-use App\Order;
 use App\Reservation;
 use App\Ticket;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Mockery;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ReservationTest extends TestCase
 {

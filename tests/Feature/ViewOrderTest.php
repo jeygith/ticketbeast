@@ -7,8 +7,6 @@ use App\Order;
 use App\Ticket;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ViewOrderTest extends TestCase
 {
@@ -61,15 +59,15 @@ class ViewOrderTest extends TestCase
             ->assertSee('$85.00')
             ->assertSee('**** **** **** 1881')
             ->assertSee('TICKETCODE123')
-            ->assertSee('TICKETCODE456')
-           /* ->assertSee('The Red Chord')
+            ->assertSee('TICKETCODE456')/* ->assertSee('The Red Chord')
             ->assertSee('with Animosity and Lethargy')
             ->assertSee('The Mosh Pit')
             ->assertSee('123 Example Lane')
             ->assertSee('Laraville, ON')
             ->assertSee('17916')
             ->assertSee('john@example.com')
-            ->assertSee('2017-03-12 20:00')*/;
+            ->assertSee('2017-03-12 20:00')*/
+        ;
 
 
     }

@@ -3,12 +3,7 @@
 namespace Tests\Unit\Billing;
 
 use App\Billing\FakePaymentGateway;
-use App\Billing\PaymentFailedException;
-use App\Billing\StripePaymentGateway;
-use function foo\func;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class  FakePaymentGatewayTest extends TestCase
 {
@@ -66,7 +61,6 @@ class  FakePaymentGatewayTest extends TestCase
         $this->assertEquals([5000, 4000], $newCharges->map->amount()->all());
 
     }
-
 
 
 }

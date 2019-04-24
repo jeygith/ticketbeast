@@ -12,6 +12,10 @@
 */
 
 
+Route::get('/', function () {
+    return "Laravel";
+});
+
 Route::get('/mockups/order', function () {
     return view('orders.show');
 });

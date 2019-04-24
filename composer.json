@@ -16,7 +16,7 @@
     "stripe/stripe-php": "^6.31"
   },
   "require-dev": {
-    "barryvdh/laravel-ide-helper": "^2.6",
+    "barryvdh/laravel-ide-helper": "^2.6.2",
     "beyondcode/laravel-dump-server": "^1.0",
     "doctrine/dbal": "^2.9",
     "filp/whoops": "^2.0",
@@ -55,18 +55,14 @@
   "scripts": {
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-      "@php artisan package:discover --ansi"
+      "@php artisan package:discover --ansi",
+      "@php artisan ide-helper:generate"
     ],
     "post-root-package-install": [
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
     ],
     "post-create-project-cmd": [
       "@php artisan key:generate --ansi"
-    ],
-    "post-update-cmd": [
-      "php artisan clear-compiled",
-      "php artisan ide-helper:generate",
-      "php artisan optimize"
     ]
   }
 }

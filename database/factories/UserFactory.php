@@ -5,8 +5,8 @@ use App\Order;
 use App\Ticket;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +33,10 @@ $factory->define(User::class, function (Faker $faker) {
 $factory->define(Concert::class, function (Faker $faker) {
 
     return [
+        'user_id' => function () {
+
+            return factory(User::class)->create()->id;
+        },
         'title' => 'Example Band',
         'subtitle' => 'with FAke openers',
         'date' => Carbon::parse('+2 weeks'),

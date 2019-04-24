@@ -26,6 +26,10 @@ class Concert extends Model
 
     protected $dates = ['date'];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function getFormattedDateAttribute()
     {
@@ -47,6 +51,16 @@ class Concert extends Model
     public function scopePublished($query)
     {
         return $query->whereNotNull('published_at');
+    }
+
+    public function isPublished()
+    {
+        return $this->published_at !== null;
+    }
+
+    public function publish()
+    {
+        $this->update(['published_at' => $this->freshTimestamp()]);
     }
 
     public function orders()
@@ -106,13 +120,13 @@ class Concert extends Model
 
     }
 
-/*    public function createOrder($email, $tickets)
-    {
+    /*    public function createOrder($email, $tickets)
+        {
 
-        return Order::forTickets($tickets, $email, $tickets->sum('price'));
+            return Order::forTickets($tickets, $email, $tickets->sum('price'));
 
 
-    }*/
+        }*/
 
     public function addTickets($quantity)
     {

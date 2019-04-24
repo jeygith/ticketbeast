@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Backstage;
 
-use App\Concert;
 use App\Http\Controllers\Controller;
+use Auth;
 use Carbon\Carbon;
 
 class ConcertsController extends Controller
@@ -31,7 +31,7 @@ class ConcertsController extends Controller
             'ticket_quantity' => 'required|numeric|min:1',
             /*            'poster_image' => ['nullable', 'image', Rule::dimensions()->minWidth(400)->ratio(8.5 / 11)]*/
         ]);
-        $concert = Concert::create([
+        $concert = Auth::user()->concerts()->create([
             'title' => request('title'),
             'subtitle' => request('subtitle'),
             'date' => Carbon::parse(vsprintf('%s %s', [request('date'), request('time')])),
@@ -44,6 +44,8 @@ class ConcertsController extends Controller
             'additional_information' => request('additional_information'),
 
         ])->addTickets(request('ticket_quantity'));
+
+        $concert->publish();
 
 
         return redirect()->route('concerts.show', $concert);

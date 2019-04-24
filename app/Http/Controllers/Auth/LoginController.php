@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Auth;
 
 class LoginController extends Controller
 {
@@ -18,22 +18,16 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function login()
     {
-        $this->middleware('guest')->except('logout');
+        // dd(request(['email', 'password']));
+
+        if (!Auth::attempt(request(['email', 'password']))) {
+            return redirect('/login')->withErrors([
+                'email' => ['These credentials do not match our records']
+            ]);
+        }
+        return redirect('/backstage/concerts');
+
     }
 }

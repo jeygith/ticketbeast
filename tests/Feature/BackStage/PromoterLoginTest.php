@@ -5,6 +5,7 @@ namespace Tests\Feature\BackStage;
 use App\User;
 use Auth;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
 class PromoterLoginTest extends TestCase
@@ -12,7 +13,8 @@ class PromoterLoginTest extends TestCase
 
     use DatabaseMigrations;
 
-    /** @test */
+
+        /** @test */
     function showing_the_login_form()
     {
         $this->disableExceptionHandling();

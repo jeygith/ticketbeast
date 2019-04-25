@@ -11,7 +11,7 @@ use Tests\TestCase;
 class AddConcertTest extends TestCase
 {
 
-    use databasemigrations;
+    use DatabaseMigrations;
 
     /*    private function from($url)
         {
@@ -107,6 +107,7 @@ class AddConcertTest extends TestCase
             $this->assertEquals('ON', $concert->state);
             $this->assertEquals('12345', $concert->zip);
             $this->assertEquals(3250, $concert->ticket_price);
+            $this->assertEquals(75, $concert->ticket_quantity);
             $this->assertEquals(75, $concert->ticketsRemaining());
         });
     }

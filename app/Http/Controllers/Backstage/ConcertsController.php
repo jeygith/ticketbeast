@@ -46,9 +46,10 @@ class ConcertsController extends Controller
             'city' => request('city'),
             'zip' => request('zip'),
             'state' => request('state'),
+            'ticket_quantity' => (int)request('ticket_quantity'),
             'additional_information' => request('additional_information'),
 
-        ])->addTickets(request('ticket_quantity'));
+        ]);
 
         $concert->publish();
 
@@ -66,5 +67,46 @@ class ConcertsController extends Controller
         abort_if($concert->isPublished(), 403);
 
         return view('backstage.concerts.edit', ['concert' => $concert]);
+    }
+
+
+    public function update($id)
+    {
+        $concert = Auth::user()->concerts()->findOrFail($id);
+
+        $this->validate(request(), [
+            'title' => 'required',
+            'date' => 'required|date',
+            'time' => 'required|date_format:g:ia',
+            'venue' => 'required',
+            'venue_address' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'zip' => 'required',
+            'ticket_price' => 'required|numeric|min:5',
+            'ticket_quantity' => 'required|integer|min:1',
+            /*            'poster_image' => ['nullable', 'image', Rule::dimensions()->minWidth(400)->ratio(8.5 / 11)]*/
+        ]);
+
+
+        abort_if($concert->isPublished(), 403);
+
+        $concert->update([
+            'title' => request('title'),
+            'subtitle' => request('subtitle'),
+            'date' => Carbon::parse(vsprintf('%s %s', [request('date'), request('time')])),
+            'venue' => request('venue'),
+            'venue_address' => request('venue_address'),
+            'city' => request('city'),
+            'state' => request('state'),
+            'zip' => request('zip'),
+            'ticket_price' => request('ticket_price') * 100,
+            'ticket_quantity' => (int)request('ticket_quantity'),
+            'additional_information' => request('additional_information'),
+
+        ]);
+
+        return redirect()->route('backstage.concerts.index');
+
     }
 }

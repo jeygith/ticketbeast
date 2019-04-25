@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
-class addconcerttest extends testcase
+class AddConcertTest extends TestCase
 {
 
     use databasemigrations;

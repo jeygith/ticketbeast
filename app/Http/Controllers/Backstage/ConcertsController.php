@@ -8,6 +8,11 @@ use Carbon\Carbon;
 
 class ConcertsController extends Controller
 {
+    public function index()
+    {
+        return view('backstage.concerts.index', ['concerts' => Auth::user()->concerts]);
+    }
+
     public function create()
     {
         return view('backstage.concerts.create');

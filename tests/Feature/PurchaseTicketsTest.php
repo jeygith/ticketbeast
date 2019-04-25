@@ -8,6 +8,7 @@ use App\Concert;
 use App\Facades\OrderConfirmationNumber;
 use App\Facades\TicketCode;
 use App\Mail\OrderConfirmationEmail;
+use ConcertFactory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Mail;
 use Tests\TestCase;
@@ -82,10 +83,13 @@ class PurchaseTicketsTest extends TestCase
         TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');
 
 
-        $concert = factory(Concert::class)->states('published')
-            ->create(['ticket_price' => 3250])
-            ->addTickets(3);;
+  /*      $concert = factory(Concert::class)->states('published')
+            ->create(['ticket_price' => 3250]);
 
+
+        $concert->publish();*/
+
+        $concert = ConcertFactory::createPublished(['ticket_price' => 3250, 'ticket_quantity' => 3]);
         //act
         //purchase tickets
 

@@ -5,7 +5,7 @@ use App\Concert;
 
 class ConcertFactory
 {
-    public static function createPublished($overrides)
+    public static function createPublished($overrides =[])
     {
         $concert = factory(Concert::class)->create($overrides);
 
@@ -14,9 +14,9 @@ class ConcertFactory
         return $concert;
     }
 
-    public static function createUnpublished($overrides)
+    public static function createUnpublished($overrides=[])
     {
-        $concert = factory(Concert::class)->create($overrides);
+        $concert = factory(Concert::class)->states('unpublished')->create($overrides);
 
         return $concert;
     }

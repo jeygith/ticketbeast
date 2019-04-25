@@ -16,6 +16,34 @@ class ViewConcertListTest extends TestCase
 {
     use DatabaseMigrations;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        TestResponse::macro('data', function ($key) {
+            return $this->original->getData()[$key];
+        });
+
+        Collection::macro('assertContains', function ($value) {
+            Assert::assertTrue($this->contains($value), "Failed asserting that the collection contained the specified value");
+        });
+        Collection::macro('assertNotContains', function ($value) {
+            Assert::assertFalse($this->contains($value), "Failed asserting that the collection did not contain the specified value");
+        });
+
+        Collection::macro('assertEquals', function ($items) {
+            Assert::assertEquals(count($this), count($items));
+
+            $this->zip($items)->each(function ($pair) {
+                list($a, $b) = $pair;
+
+                Assert::assertTrue($a->is($b));
+            });
+        });
+
+    }
+
+
     /** @test */
     function guest_cannot_view_a_promoters_concert_list()
     {
@@ -46,48 +74,22 @@ class ViewConcertListTest extends TestCase
         $unpublishedConcertC = ConcertFactory::createUnpublished(['user_id' => $user->id]);
 
 
-        $concertD = factory(Concert::class)->create(['user_id' => $user->id]);
-
-        $otherUsersConcert = factory(Concert::class)->create([
-            'user_id' => $otherUser->id
-        ]);
-
         $response = $this->actingAs($user)->get('/backstage/concerts');
 
         $response->assertStatus(200);
 
-        $response->data('publishedConcerts')->assertContains($publishedConcertA);
-        $response->data('publishedConcerts')->assertContains($publishedConcertC);
-        $response->data('publishedConcerts')->assertNotContains($publishedConcertB);
-        $response->data('publishedConcerts')->assertNotContains($unpublishedConcertA);
-        $response->data('publishedConcerts')->assertNotContains($unpublishedConcertB);
-        $response->data('publishedConcerts')->assertNotContains($unpublishedConcertC);
+        $response->data('publishedConcerts')->assertEquals([
+            $publishedConcertA,
+            $publishedConcertC,
+        ]);
 
-
-        $response->data('unpublishedConcerts')->assertContains($unpublishedConcertA);
-        $response->data('unpublishedConcerts')->assertContains($unpublishedConcertC);
-        $response->data('unpublishedConcerts')->assertNotContains($unpublishedConcertB);
-        $response->data('unpublishedConcerts')->assertNotContains($publishedConcertA);
-        $response->data('unpublishedConcerts')->assertNotContains($publishedConcertB);
-        $response->data('unpublishedConcerts')->assertNotContains($publishedConcertC);
+        $response->data('unpublishedConcerts')->assertEquals([
+            $unpublishedConcertA,
+            $unpublishedConcertC,
+        ]);
 
 
     }
 
-    protected function setUp(): void
-    {
-        parent::setUp();
 
-        TestResponse::macro('data', function ($key) {
-            return $this->original->getData()[$key];
-        });
-
-        Collection::macro('assertContains', function ($value) {
-            Assert::assertTrue($this->contains($value), "Failed asserting that the collection contained the specified value");
-        });
-        Collection::macro('assertNotContains', function ($value) {
-            Assert::assertFalse($this->contains($value), "Failed asserting that the collection did not contain the specified value");
-        });
-
-    }
 }

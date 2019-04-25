@@ -6,7 +6,7 @@
             <h1 class="text-lg">Add a concert</h1>
         </div>
     </div>
-    <form class="bg-soft p-xs-y-5" action="/backstage/concerts" method="POST" enctype="multipart/form-data">
+    <form class="bg-soft p-xs-y-5" action={{"/backstage/concerts"}} method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
 
         @if ($errors->any())

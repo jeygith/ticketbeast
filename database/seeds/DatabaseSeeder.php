@@ -1,8 +1,8 @@
 <?php
 
 use App\Concert;
+use App\User;
 use Carbon\Carbon;
-use Faker\Generator as Faker;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,6 +15,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
+
+        $user = factory(User::class)->create([
+            'email' => 'person@example.com',
+            'password' => bcrypt('secret')
+        ]);
 
         factory(Concert::class)->states('published')->create([
             'title' => 'The Red Chord',

@@ -33,7 +33,7 @@ class LoginController extends Controller
                 'email' => ['These credentials do not match our records']
             ])->withInput(request(['email']));
         }
-        return redirect('/backstage/concerts/new');
+        return redirect('/backstage/concerts');
 
     }
 

@@ -72,7 +72,7 @@ class Concert extends Model
 
     public function orders()
     {
-       // return $this->belongsToMany(Order::class, 'tickets');
+        // return $this->belongsToMany(Order::class, 'tickets');
         return Order::whereIn('id', $this->tickets()->pluck('order_id'));
 
     }
@@ -175,5 +175,10 @@ class Concert extends Model
     public function revenueInDollars()
     {
         return $this->orders()->sum('amount') / 100;
+    }
+
+    public function hasPoster()
+    {
+        return $this->poster_image_path !== null;
     }
 }

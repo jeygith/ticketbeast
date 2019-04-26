@@ -427,4 +427,59 @@ class AddConcertTest extends TestCase
 
     }
 
+    /** @test */
+    public function poster_image_must_be_an_image()
+    {
+        Storage::fake('s3');
+        $user = factory(User::class)->create();
+
+        $file = File::create('not-a-poster.pdf');
+
+        $response = $this->actingAs($user)->from('backstage/concerts/new')->post('backstage/concerts', $this->validParams([
+            'poster_image' => $file,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertRedirect('backstage/concerts/new');
+        $response->assertSessionHasErrors('poster_image');
+        $this->assertEquals(0, Concert::count());
+    }
+
+    /** @test */
+    public function poster_image_must_be_at_least_400px_wide()
+    {
+        Storage::fake('s3');
+        $user = factory(User::class)->create();
+
+        $file = File::image('poster.png', 399, 516);
+
+        $response = $this->actingAs($user)->from('backstage/concerts/new')->post('backstage/concerts', $this->validParams([
+            'poster_image' => $file,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertRedirect('backstage/concerts/new');
+        $response->assertSessionHasErrors('poster_image');
+        $this->assertEquals(0, Concert::count());
+    }
+
+    /** @test */
+    public function poster_image_must_have_letter_aspect_ratio()
+    {
+        Storage::fake('s3');
+        $user = factory(User::class)->create();
+
+        $file = File::image('poster.png', 399, 851, 1100);
+
+        $response = $this->actingAs($user)->from('backstage/concerts/new')->post('backstage/concerts', $this->validParams([
+            'poster_image' => $file,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertRedirect('backstage/concerts/new');
+        $response->assertSessionHasErrors('poster_image');
+        $this->assertEquals(0, Concert::count());
+    }
+
+
 }

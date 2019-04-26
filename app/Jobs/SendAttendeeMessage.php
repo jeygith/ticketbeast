@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Log;
 use Mail;
 
 class SendAttendeeMessage implements ShouldQueue
@@ -30,12 +31,23 @@ class SendAttendeeMessage implements ShouldQueue
      */
     public function handle()
     {
+        Log::alert('handling email');
 
-        $this->attendeeMessage->withChunkedRecipients(20,function ($recipients) {
+        $this->attendeeMessage->withChunkedRecipients(20, function ($recipients) {
+            Log::alert('in chucked recipients');
+
             $recipients->each(function ($recipient) {
+                Log::alert('for each recipient');
                 Mail::to($recipient)->queue(new AttendeeMessageEmail($this->attendeeMessage));
             });
         });
+
+    }
+
+    public function failed()
+    {
+        // Called when the job is failing...
+        Log::alert('error in queue mail');
 
     }
 }

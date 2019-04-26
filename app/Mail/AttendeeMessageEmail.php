@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Mail;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
+use Illuminate\Queue\SerializesModels;
+
+class AttendeeMessageEmail extends Mailable
+{
+    use Queueable, SerializesModels;
+
+    public $attendeeMessage;
+
+    public function __construct($attendeeMessage)
+    {
+        $this->attendeeMessage = $attendeeMessage;
+    }
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->view('view.name');
+    }
+}

@@ -52,9 +52,11 @@ class MessageAttendeesTest extends TestCase
 
 
     /** @test */
-    function a_promoter_can_send_a_new_message_to_attendees()
+    function a_promoter_can_send_a_new_message()
     {
         $this->disableExceptionHandling();
+
+        Queue::fake();
 
         $user = factory(User::class)->create();
 
@@ -79,38 +81,14 @@ class MessageAttendeesTest extends TestCase
         $this->assertEquals("My Subject", $message->subject);
         $this->assertEquals("My Message", $message->message);
 
-    }
-
-
-    /** @test */
-    public function a_promoter_can_send_a_new_message()
-    {
-        $this->withExceptionHandling();
-
-        Queue::fake();
-        $user = factory(User::class)->create();
-        $concert = \ConcertFactory::createPublished([
-            'user_id' => $user->id
-        ]);
-
-        $response = $this->actingAs($user)->post("/backstage/concerts/{$concert->id}/messages", [
-            'subject' => 'My Subject',
-            'message' => 'My Message'
-        ]);
-
-        $response->assertRedirect("/backstage/concerts/{$concert->id}/messages/new");
-        $response->assertSessionHas('flash');
-
-        $message = AttendeeMessage::first();
-
-        $this->assertEquals($concert->id, $message->concert_id);
-        $this->assertEquals("My Subject", $message->subject);
-        $this->assertEquals("My Message", $message->message);
-
         Queue::assertPushed(SendAttendeeMessage::class, function ($job) use ($message) {
             return $job->attendeeMessage->is($message);
         });
+
     }
+
+
+
 
     /** @test */
     public function a_promoter_cannot_send_messages_for_another_promoters_concerts()

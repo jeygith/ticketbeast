@@ -53,7 +53,7 @@ class ConcertsController extends Controller
             'state' => request('state'),
             'ticket_quantity' => (int)request('ticket_quantity'),
             'additional_information' => request('additional_information'),
-
+            'poster_image_path' => request('poster_image')->store('posters', 's3')
         ]);
 
         //  $concert->publish();

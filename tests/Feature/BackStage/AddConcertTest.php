@@ -6,6 +6,8 @@ use App\Concert;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Http\Testing\File;
+use Storage;
 use Tests\TestCase;
 
 class AddConcertTest extends TestCase
@@ -394,4 +396,35 @@ class AddConcertTest extends TestCase
         $this->assertEquals(0, Concert::count());
         $response->assertSessionHasErrors('ticket_quantity');
     }
+
+
+    /** @test */
+    public function poster_image_is_uploaded_if_included()
+    {
+        $this->disableExceptionHandling();
+        Storage::fake('s3');
+        $user = factory(User::class)->create();
+        $file = File::image('concert-poster.png', 850, 1100);
+
+        $this->actingAs($user)->post('backstage/concerts', $this->validParams([
+            'poster_image' => $file,
+        ]));
+
+        $concert = Concert::first();
+        $this->assertNotNull($concert->poster_image_path);
+
+        Storage::disk('s3')->assertExists($concert->poster_image_path);
+
+        tap(Concert::first(), function ($concert) use ($file) {
+            $this->assertNotNull($concert->poster_image_path);
+            Storage::disk('s3')->assertExists($concert->poster_image_path);
+
+            $this->assertFileEquals(
+                $file->getPathName(),
+                Storage::disk('s3')->path($concert->poster_image_path)
+            );
+        });
+
+    }
+
 }

@@ -20,7 +20,7 @@ class SchedulePosterImageProcessingTest extends TestCase
         $this->disableExceptionHandling();
         Queue::fake();
         $concert = ConcertFactory::createUnpublished([
-            'poster_image_path' => 'posters/example-poster.png'
+            'poster_image_path' => 'posters/optimized-poster.png'
         ]);
 
         ConcertAdded::dispatch($concert);

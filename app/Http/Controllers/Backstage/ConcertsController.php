@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backstage;
 
 use App\Http\Controllers\Controller;
+use App\NullFile;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
@@ -42,7 +43,7 @@ class ConcertsController extends Controller
             'ticket_quantity' => 'required|numeric|min:1',
             'poster_image' => ['nullable', 'image', Rule::dimensions()->minWidth(400)->ratio(8.5 / 11)]
 
-/*            'poster_image' => ['nullable', 'image', Rule::dimensions()->minWidth(400)->ratio(8.5 / 11)]*/
+            /*            'poster_image' => ['nullable', 'image', Rule::dimensions()->minWidth(400)->ratio(8.5 / 11)]*/
         ]);
         $concert = Auth::user()->concerts()->create([
             'title' => request('title'),
@@ -56,7 +57,7 @@ class ConcertsController extends Controller
             'state' => request('state'),
             'ticket_quantity' => (int)request('ticket_quantity'),
             'additional_information' => request('additional_information'),
-            'poster_image_path' => request('poster_image')->store('posters', 's3')
+            'poster_image_path' => request('poster_image', new NullFile)->store('posters', 's3'),
         ]);
 
         //  $concert->publish();

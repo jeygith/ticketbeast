@@ -17088,7 +17088,7 @@ return jQuery;
       genTag = '[object GeneratorFunction]',
       mapTag = '[object Map]',
       numberTag = '[object Number]',
-      nullTag = '[object Null]',
+      nullTag = '[object NullFile]',
       objectTag = '[object Object]',
       promiseTag = '[object Promise]',
       proxyTag = '[object Proxy]',

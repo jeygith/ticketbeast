@@ -97,6 +97,7 @@ $factory->define(Order::class, function (Faker $faker) {
 $factory->define(Invitation::class, function (Faker $faker) {
 
     return [
-        'code' => ''
+        'code' => 'TESTCODE1234',
+        'email' => 'somebody@email.com'
     ];
 });

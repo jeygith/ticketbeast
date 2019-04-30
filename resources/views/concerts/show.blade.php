@@ -4,8 +4,8 @@
 
 <div class="bg-soft p-xs-y-7 full-height">
     <div class="container">
-        @if (1 === 2)
-            @include('concerts.partials.card-with-poster', ['concert' => $concert])
+        @if ($concert->hasPoster())
+        @include('concerts.partials.card-with-poster', ['concert' => $concert])
         @else
             @include('concerts.partials.card-no-poster', ['concert' => $concert])
         @endif

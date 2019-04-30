@@ -24,7 +24,9 @@ class DatabaseSeeder extends Seeder
 
         $user = factory(User::class)->create([
             'email' => 'person@example.com',
-            'password' => bcrypt('secret')
+            'password' => bcrypt('secret'),
+            'stripe_account_id' => null,
+            'stripe_access_token' => null,
         ]);
 
         $concert = ConcertFactory::createPublished([

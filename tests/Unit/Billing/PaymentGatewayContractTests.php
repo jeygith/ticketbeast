@@ -20,7 +20,7 @@ trait PaymentGatewayContractTests
         // create new charge with a valid stripe token
 
         $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
-            $paymentGateway->charge(2500, $paymentGateway->getValidTestToken(), 'test_acc_1234');
+            $paymentGateway->charge(2500, $paymentGateway->getValidTestToken(), env('STRIPE_TEST_PROMOTER_ID'));
         });
 
         // verify the charge was completed successfully
@@ -37,13 +37,13 @@ trait PaymentGatewayContractTests
     {
         $paymentGateway = $this->getPaymentGateway();
 
-        $charge = $paymentGateway->charge(2500, $paymentGateway->getValidTestToken($paymentGateway::TEST_CARD_NUMBER), 'test_acc_1234');
+        $charge = $paymentGateway->charge(2500, $paymentGateway->getValidTestToken($paymentGateway::TEST_CARD_NUMBER), env('STRIPE_TEST_PROMOTER_ID'));
 
 
         $this->assertEquals(substr(($paymentGateway::TEST_CARD_NUMBER), -4), $charge->cardLastFour());
         $this->assertEquals(2500, $charge->amount());
 
-        $this->assertEquals('test_acc_1234', $charge->destination());
+        $this->assertEquals(env('STRIPE_TEST_PROMOTER_ID'), $charge->destination());
 
 
     }
@@ -57,7 +57,7 @@ trait PaymentGatewayContractTests
 
             try {
 
-                $paymentGateway->charge(2500, 'invalid-payment-token', 'test_acc_1234');
+                $paymentGateway->charge(2500, 'invalid-payment-token', env('STRIPE_TEST_PROMOTER_ID'));
 
             } catch (PaymentFailedException $e) {
                 return;

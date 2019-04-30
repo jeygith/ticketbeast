@@ -22,13 +22,11 @@
             <directory suffix=".php">./app</directory>
         </whitelist>
     </filter>
-    <groups>
+<!--    <groups>
         <exclude>
-<!--
             <group>integration</group>
--->
         </exclude>
-    </groups>
+    </groups>-->
 
     <php>
         <server name="APP_ENV" value="testing"/>

@@ -18,7 +18,7 @@ class StripePaymentGateway implements PaymentGateway
         $this->apiKey = $apiKey;
     }
 
-    function charge($amount, $token)
+    function charge($amount, $token, $destinationAccountId)
     {
 
 
@@ -33,6 +33,7 @@ class StripePaymentGateway implements PaymentGateway
             return new Charge([
                 'amount' => $stripeCharge['amount'],
                 'card_last_four' => $stripeCharge['source']['last4'],
+                'destination' => $destinationAccountId
             ]);
 
         } catch (InvalidRequest $e) {

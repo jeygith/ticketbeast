@@ -7,9 +7,6 @@ use App\Billing\PaymentGateway;
 use App\Concert;
 use App\Exceptions\NotEnoughTicketsException;
 use App\Mail\OrderConfirmationEmail;
-use App\Order;
-use App\Reservation;
-use Illuminate\Http\Request;
 use Mail;
 
 class ConcertOrdersController extends Controller
@@ -41,7 +38,7 @@ class ConcertOrdersController extends Controller
 
             // charge customers create order for those tickets
 
-            $order = $reservation->complete($this->paymentGateway, request('payment_token'));
+            $order = $reservation->complete($this->paymentGateway, request('payment_token'), $concert->user->stripe_account_id);
 
 
             Mail::to($order->email)->send(new OrderConfirmationEmail($order));

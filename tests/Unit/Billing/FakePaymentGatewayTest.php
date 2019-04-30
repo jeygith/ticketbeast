@@ -15,6 +15,23 @@ class  FakePaymentGatewayTest extends TestCase
         return new FakePaymentGateway();
     }
 
+
+    /** @test */
+    function can_get_total_charges_for_a_specific_account()
+    {
+        $paymentGateway = new FakePaymentGateway;
+
+        $paymentGateway->charge(1000, $paymentGateway->getValidTestToken(), 'test_acc_0000');
+        $paymentGateway->charge(2500, $paymentGateway->getValidTestToken(), 'test_acc_1234');
+        $paymentGateway->charge(4000, $paymentGateway->getValidTestToken(), 'test_acc_1234');
+
+
+        $this->assertEquals(6500, $paymentGateway->totalChargesFor('test_acc_1234'));
+
+
+    }
+
+
     /** @test */
     function running_a_hook_before_the_first_charge()
     {
@@ -26,7 +43,7 @@ class  FakePaymentGatewayTest extends TestCase
 
 
         $paymentGateway->beforeFirstCharge(function ($paymentGateway) use (&$timesCallbackRan) {
-            $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
+            $paymentGateway->charge(2500, $paymentGateway->getValidTestToken(), 'test_acc_1234');
 
             $timesCallbackRan++;
 
@@ -34,7 +51,7 @@ class  FakePaymentGatewayTest extends TestCase
         });
 
 
-        $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
+        $paymentGateway->charge(2500, $paymentGateway->getValidTestToken(), 'test_acc_1234');
 
         $this->assertEquals(1, $timesCallbackRan);
 
@@ -48,12 +65,12 @@ class  FakePaymentGatewayTest extends TestCase
     function can_fetch_charges_created_during_a_callback()
     {
         $paymentGateway = $this->getPaymentGateway();
-        $paymentGateway->charge(2000, $paymentGateway->getValidTestToken());
-        $paymentGateway->charge(3000, $paymentGateway->getValidTestToken());
+        $paymentGateway->charge(2000, $paymentGateway->getValidTestToken(), 'test_acc_1234');
+        $paymentGateway->charge(3000, $paymentGateway->getValidTestToken(), 'test_acc_1234');
 
         $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
-            $paymentGateway->charge(4000, $paymentGateway->getValidTestToken());
-            $paymentGateway->charge(5000, $paymentGateway->getValidTestToken());
+            $paymentGateway->charge(4000, $paymentGateway->getValidTestToken(), 'test_acc_1234');
+            $paymentGateway->charge(5000, $paymentGateway->getValidTestToken(), 'test_acc_1234');
         });
 
 

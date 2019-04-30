@@ -18,7 +18,7 @@ class ReservationTest extends TestCase
     function calculating_the_total_cost()
     {
 
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
         $tickets = collect(
             [
                 (object)['price' => 1200],

@@ -2,9 +2,6 @@
 
 namespace Tests;
 
-use App\Exceptions\Handler;
-use Exception;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\TestResponse;
@@ -55,7 +52,9 @@ abstract class TestCase extends BaseTestCase
 
     protected function disableExceptionHandling()
     {
-        $this->app->instance(ExceptionHandler::class, new class extends Handler
+
+        $this->withExceptionHandling();
+        /*$this->app->instance(ExceptionHandler::class, new class extends Handler
         {
             public function __construct()
             {
@@ -71,6 +70,6 @@ abstract class TestCase extends BaseTestCase
             {
                 throw $e;
             }
-        });
+        });*/
     }
 }

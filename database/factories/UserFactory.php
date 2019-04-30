@@ -1,6 +1,7 @@
 <?php
 
 use App\Concert;
+use App\Invitation;
 use App\Order;
 use App\Ticket;
 use App\User;
@@ -89,5 +90,13 @@ $factory->define(Order::class, function (Faker $faker) {
         'confirmation_number' => 'ORDERCONFIRMATION1234',
         'card_last_four' => '1234'
 
+    ];
+});
+
+
+$factory->define(Invitation::class, function (Faker $faker) {
+
+    return [
+        'code' => ''
     ];
 });

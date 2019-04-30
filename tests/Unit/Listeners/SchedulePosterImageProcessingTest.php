@@ -17,7 +17,7 @@ class SchedulePosterImageProcessingTest extends TestCase
     /** @test */
     function it_queues_a_job_to_process_a_poster_image_if_a_poster_image_is_present()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
         Queue::fake();
         $concert = ConcertFactory::createUnpublished([
             'poster_image_path' => 'posters/optimized-poster.png'
@@ -36,7 +36,7 @@ class SchedulePosterImageProcessingTest extends TestCase
     /** @test */
     function a_job_is_not_queued_if_a_poster_image_is_not_present()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
         Queue::fake();
         $concert = ConcertFactory::createUnpublished([
             'poster_image_path' => null

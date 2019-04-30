@@ -17,7 +17,7 @@ class PromoterLoginTest extends TestCase
         /** @test */
     function showing_the_login_form()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $response = $this->get('/login');
 
@@ -30,7 +30,7 @@ class PromoterLoginTest extends TestCase
     /** @test */
     function loggin_in_with_valid_credentials()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $user = factory(User::class)->create([
 
@@ -56,7 +56,7 @@ class PromoterLoginTest extends TestCase
     /** @test */
     function loggin_in_with_invalid_credentials()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $user = factory(User::class)->create([
 
@@ -81,7 +81,7 @@ class PromoterLoginTest extends TestCase
     /** @test */
     function loggin_in_with_account_that_does_not_exist()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $response = $this->post('/login', [
             'email' => 'nobody@example.com',

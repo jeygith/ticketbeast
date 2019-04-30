@@ -23,9 +23,12 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    protected $guarded = [];
+
+
+    /*    protected $fillable = [
+            'name', 'email', 'password',
+        ];*/
 
     /**
      * The attributes that should be hidden for arrays.
@@ -48,6 +51,6 @@ class User extends Authenticatable
 
     public function concerts()
     {
-       return $this->hasMany(Concert::class);
+        return $this->hasMany(Concert::class);
     }
 }

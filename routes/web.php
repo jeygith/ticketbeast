@@ -65,6 +65,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'backstage', 'namespace' => 'B
 
     Route::get('/stripe-connect/authorize', 'StripeConnectController@authorizeRedirect');
 
+    Route::get('/stripe-connect/redirect', 'StripeConnectController@redirect');
+
 
 });
 

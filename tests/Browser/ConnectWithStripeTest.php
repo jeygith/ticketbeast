@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
+use Stripe\Account;
 use Tests\DuskTestCase;
 
 
@@ -23,6 +24,7 @@ class ConnectWithStripeTest extends DuskTestCase
             'stripe_access_token' => null
         ]);
 
+
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
                 ->visit('/backstage/stripe-connect/authorize')
@@ -30,8 +32,22 @@ class ConnectWithStripeTest extends DuskTestCase
                 ->assertQueryStringHas('response_type', 'code')
                 ->assertQueryStringHas('response_type', 'code')
                 ->assertQueryStringHas('scope', 'read_write')
-                ->assertQueryStringHas('client_id', config('services.stripe.client_id')
-                );
+                ->assertQueryStringHas('client_id', config('services.stripe.client_id'))
+                ->clickLink('Skip this account form')
+                ->assertRouteIs('backstage.concerts.index');
+
+
+            tap($user->fresh(), function ($user) {
+                $this->assertNotNull($user->stripe_account_id);
+                $this->assertNotNull($user->stripe_access_token);
+
+
+                $connectedAccount = Account::retrieve(null, [
+                    'api_key' => $user->stripe_access_token
+                ]);
+
+                $this->assertEquals($connectedAccount->id, $user->stripe_account_id);
+            });
         });
     }
 }

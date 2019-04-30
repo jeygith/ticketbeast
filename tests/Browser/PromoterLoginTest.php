@@ -15,17 +15,17 @@ class PromoterLoginTest extends DuskTestCase
     function logging_in_successfully()
     {
 
-   /*     $user = factory(User::class)->create([
+        $user = factory(User::class)->create([
 
             'email' => 'jane@example.com',
             'password' => bcrypt('super-secret-password')
-        ]);*/
+        ]);
 
 
         $this->browse(function (Browser $browser) {
             $browser->visit('/login')
-                ->type('email', 'person@example.com')
-                ->type('password', 'secret')
+                ->type('email', 'jane@example.com')
+                ->type('password', 'super-secret-password')
                 ->press('Log in')
                 ->assertPathIs('/backstage/concerts');
         });

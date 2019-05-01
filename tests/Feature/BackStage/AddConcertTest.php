@@ -371,6 +371,8 @@ class AddConcertTest extends TestCase
         $response->assertSessionHasErrors('ticket_quantity');
     }
 
+
+
     /** @test */
     public function ticket_quantity_must_be_numeric()
     {

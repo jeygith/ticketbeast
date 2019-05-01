@@ -49,7 +49,7 @@ class StripePaymentGateway implements PaymentGateway
     {
         return Token::create([
             'card' => [
-                'number' => $cardNumber,
+                'number' => 4242424242424242,
                 'exp_month' => 1,
                 'exp_year' => date('Y') + 1,
                 'cvc' => '123'

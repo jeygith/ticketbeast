@@ -11,7 +11,7 @@ class StripePaymentGateway implements PaymentGateway
 {
 
     private $apiKey;
-    const TEST_CARD_NUMBER = 4242424242424242;
+    const TEST_CARD_NUMBER = '4000056655665556';
 
     public function __construct($apiKey)
     {
@@ -49,7 +49,7 @@ class StripePaymentGateway implements PaymentGateway
     {
         return Token::create([
             'card' => [
-                'number' => 4242424242424242,
+                'number' => $cardNumber,
                 'exp_month' => 1,
                 'exp_year' => date('Y') + 1,
                 'cvc' => '123'
